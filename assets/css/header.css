@@ -1,0 +1,506 @@
+/* Header Base - Modified for Overlay */
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 30px;
+  position: absolute; /* Make header overlay */
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100; /* Ensure header is above hero content */
+  width: 100%;
+  box-sizing: border-box;
+  transition: all 0.3s ease;
+}
+
+/* Header transparent state (initial) */
+.header-transparent {
+  background: transparent !important;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
+/* Header scrolled state (with blur) */
+.header-scrolled {
+  position: fixed !important;
+  background: rgba(0, 0, 0, 0.6) !important;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+}
+
+/* Navigation transparent state */
+.nav-transparent {
+  background: transparent;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
+/* Navigation scrolled state (with blur) */
+.nav-scrolled {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-radius: 8px;
+  transition: all 0.3s ease;
+}
+
+/* Keep menu background transparent when requested */
+.nav-no-bg.nav-scrolled,
+.nav-no-bg.nav-transparent {
+  background: transparent;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
+/* Legacy support for existing classes */
+header.sticky {
+  position: fixed;
+  top: 0;
+  z-index: 1000;
+  width: 100%;
+}
+
+header.bg-transparent {
+  background-color: transparent !important;
+}
+
+.backdrop-blur10px {
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+header .logo img {
+  height: 50px;
+}
+
+header .nav-menu {
+  display: flex;
+  list-style: none;
+  padding-left: 0;
+  margin: 0;
+}
+
+header .nav-menu li {
+  position: relative;
+}
+
+header .nav-menu li a {
+  text-decoration: none;
+  color: #fff;
+  font-size: 16px;
+  font-weight: normal;
+  display: block;
+  padding: 10px 10px;
+  transition: color 0.3s ease;
+}
+
+header .nav-menu li:hover > .submenu {
+  display: block;
+  z-index: 99;
+  width: 14rem;
+}
+
+.submenu {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background: rgba(0, 0, 0, 0.9);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+  min-width: 180px;
+  z-index: 10;
+  border-radius: 8px;
+}
+
+.submenu li a {
+  padding: 10px 15px;
+  font-size: 14px;
+}
+
+header .nav-menu {
+  margin-right: 20px;
+}
+
+header .nav-menu li:last-child {
+  margin-right: 0;
+}
+
+/* Hamburger Icon Hidden by Default */
+.hamburger-menu {
+  display: none;
+  background: none;
+  border: none;
+  font-size: 30px;
+  color: #fff;
+  cursor: pointer;
+  z-index: 1002;
+}
+
+/* Hero Section - Add top padding to accommodate header */
+.hero-section {
+  padding-top: 90px; /* Adjust based on your header height */
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+  .hamburger-menu {
+    display: block;
+  }
+
+  /* Mobile header scrolled state */
+  .header-scrolled {
+    background: rgba(0, 0, 0, 0.8) !important;
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+  }
+
+  /* Nav utama di mobile */
+  .main-nav {
+    display: none;
+    position: absolute;
+    top: 90px;
+    left: 0;
+    right: 0;
+    width: 100%;
+    flex-direction: column;
+    z-index: 999;
+    transition: all 0.3s ease;
+    max-height: calc(100vh - 90px); /* Limit height to viewport minus header */
+    overflow-y: auto; /* Enable vertical scrolling */
+    overflow-x: hidden; /* Prevent horizontal scroll */
+  }
+
+  /* Mobile nav transparent state */
+  .main-nav.nav-transparent {
+    background: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+  }
+
+  /* Mobile nav scrolled state */
+  .main-nav.nav-scrolled {
+    background: rgba(0, 0, 0, 0.9) !important;
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+  }
+
+  .main-nav.active {
+    display: flex;
+    padding: 10px;
+  }
+
+  /* Custom scrollbar for mobile menu */
+  .main-nav::-webkit-scrollbar {
+    width: 4px;
+  }
+
+  .main-nav::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 2px;
+  }
+
+  .main-nav::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 2px;
+  }
+
+  .main-nav::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.5);
+  }
+
+  /* Smooth scrolling behavior */
+  .main-nav {
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch; /* iOS smooth scrolling */
+  }
+
+  header .nav-menu {
+    flex-direction: column;
+    width: 100%;
+    margin: 0;
+  }
+
+  header .nav-menu li a {
+    padding-left: 25px;
+    padding-right: 60px; /* Add space for chevron icon */
+    text-align: left;
+    border-bottom: 1px solid rgba(238, 238, 238, 0.2);
+    display: flex;
+    align-items: center;
+    position: relative;
+  }
+
+  /* Remove hover effect for mobile */
+  header .nav-menu li:hover > .submenu {
+    display: none;
+  }
+
+  /* Add active class for clicked submenus */
+  header .nav-menu li.active > .submenu {
+    display: block;
+    width: calc(100% - 40px);
+    margin-left: 20px;
+    margin-right: 20px;
+  }
+
+  .submenu {
+    position: relative;
+    top: 0;
+    left: 0;
+    width: calc(100% - 40px);
+    margin-left: 20px;
+    margin-right: 20px;
+    box-shadow: none;
+    display: none;
+    background: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-radius: 8px;
+  }
+
+  .submenu li a {
+    padding: 10px 20px;
+  }
+
+  .nav-menu i {
+    position: absolute;
+    right: 28px;
+    font-size: 18px;
+  }
+
+  .ti-chevron-down {
+    pointer-events: auto;
+    cursor: pointer;
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    padding: 8px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+    transition: all 0.3s ease;
+    z-index: 10;
+  }
+
+  .ti-chevron-down:hover {
+    background: rgba(255, 255, 255, 0.2);
+  }
+
+  .menu-link {
+    display: flex;
+    align-items: center;
+    width: 100%;
+  }
+
+  /* Ensure parent links are clickable for navigation */
+  .menu-item-has-children > .menu-link {
+    padding-right: 60px; /* Space for chevron */
+  }
+
+  /* Style for active dropdown state */
+  .menu-item-has-children.active > .menu-link .ti-chevron-down {
+    transform: translateY(-50%) rotate(180deg);
+    background: rgba(255, 255, 255, 0.2);
+  }
+
+  /* Mobile hero section padding */
+  .hero-section {
+    padding-top: 80px;
+  }
+}
+
+/* Desktop */
+@media (min-width: 769px) {
+  .hamburger-menu {
+    display: none;
+  }
+
+  .depth-1 {
+    left: 14rem;
+    top: 0;
+  }
+
+  .depth-0 {
+    top: 40px;
+  }
+
+  .depth-2 {
+    left: 14rem;
+    top: 0;
+  }
+
+  /* Desktop header scrolled state */
+  .header-scrolled {
+    background: rgba(0, 0, 0, 0.6) !important;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  }
+
+  /* Desktop nav scrolled state */
+  .main-nav.nav-scrolled {
+    background: transparent;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border-radius: 8px;
+    padding: 5px 10px;
+  }
+}
+
+.ti-chevron-down-m {
+  position: absolute;
+  right: 28px;
+  font-size: 18px;
+}
+
+/* Additional styles for better overlay effect */
+header::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.3) 0%, transparent 100%);
+  z-index: -1;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+/* Show gradient overlay when header is transparent */
+.header-transparent::before {
+  opacity: 1;
+}
+
+/* Hide gradient overlay when header is scrolled (has its own background) */
+.header-scrolled::before {
+  opacity: 0;
+}
+
+/* Ensure CTA button is visible */
+header .cta-button {
+  background-color: transparent;
+  border: 2px solid #fff;
+  color: #fff;
+  padding: 8px 16px;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+/* Smooth padding transition for better visual effect */
+.header-scrolled .container {
+  padding-top: 0.75rem;
+  padding-bottom: 0.75rem;
+  transition: all 0.3s ease;
+}
+
+/* Ensure proper stacking order */
+header {
+  z-index: 1000;
+}
+
+.main-nav {
+  z-index: 1001;
+}
+
+.hamburger-menu {
+  z-index: 1002;
+}
+
+/* Smooth transitions for all blur effects */
+header,
+.main-nav,
+.submenu {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Enhanced mobile menu blur effect */
+@media (max-width: 768px) {
+  .main-nav.active.nav-scrolled {
+    background: rgba(0, 0, 0, 0.95) !important;
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  /* Add fade effect at top and bottom for better scroll indication */
+  .main-nav.active::before {
+    content: '';
+    position: sticky;
+    top: 0;
+    height: 20px;
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.8), transparent);
+    z-index: 1;
+    pointer-events: none;
+  }
+
+  .main-nav.active::after {
+    content: '';
+    position: sticky;
+    bottom: 0;
+    height: 20px;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
+    z-index: 1;
+    pointer-events: none;
+  }
+
+  /* Ensure menu items have proper spacing for scrolling */
+  .main-nav .nav-menu {
+    padding-bottom: 20px; /* Extra space at bottom */
+  }
+}
+
+ .liquid-glass {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+}
+
+.liquid-glass::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(45deg, 
+        rgba(59, 130, 246, 0.1) 0%, 
+        rgba(147, 51, 234, 0.1) 25%, 
+        rgba(236, 72, 153, 0.1) 50%, 
+        rgba(245, 158, 11, 0.1) 75%, 
+        rgba(34, 197, 94, 0.1) 100%);
+    border-radius: inherit;
+    z-index: -1;
+}
+
+.why-choice-juara-swiper .swiper-wrapper {
+    display: flex !important;
+    align-items: stretch !important;
+}
+
+.why-choice-juara-swiper .swiper-slide {
+    height: auto !important;
+    display: flex !important;
+    align-items: stretch !important;
+}
+
+.why-choice-juara-swiper .liquid-glass {
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: space-between !important;
+    min-height: 450px !important; /* Set minimum height */
+    height: 100% !important;
+}
+
+.why-choice-juara-swiper .liquid-glass p {
+    flex: 1 1 auto !important;
+    display: flex !important;
+    align-items: center !important;
+}

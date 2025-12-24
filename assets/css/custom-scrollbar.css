@@ -1,0 +1,28 @@
+/* Custom scrollbar color for Webkit browsers (Chrome, Safari, Edge) */
+::-webkit-scrollbar {
+  width: 12px; /* Width of the scrollbar */
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #ffcb30; /* Scrollbar thumb color */
+  border-radius: 6px; /* Rounded edges for the scrollbar */
+}
+
+::-webkit-scrollbar-track {
+  background: #090f1b; /* Background color of the scrollbar track */
+  border-radius: 6px; /* Rounded edges for the track */
+}
+
+/* Firefox scrollbar customization */
+html {
+  scrollbar-color: #ffcb30 #090f1b; /* Thumb color and track color for Firefox */
+  scrollbar-width: thin; /* Set the width of the scrollbar */
+}
+
+.no-scrollbar-8080 {
+  -ms-overflow-style: none; /* IE dan Edge */
+  scrollbar-width: none; /* Firefox */
+}
+.no-scrollbar-8080::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
+}
