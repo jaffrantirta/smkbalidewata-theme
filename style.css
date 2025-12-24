@@ -8,3 +8,9 @@ Version: 1.0
 License: GNU General Public License v2 or later
 Text Domain: Juara Holding Group
 */
+
+/* Page content markers - ensure readable list numbering */
+.page .prose ol > li::marker,
+.page .prose ul > li::marker {
+  color: #64748b;
+}
