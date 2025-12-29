@@ -1,513 +1,283 @@
-<?php get_template_part('templates/header'); ?>
+<?php
+get_header();
+?>
 
-<!-- Hero Section with Carousel -->
-<section class="relative h-screen overflow-hidden">
+<main>
     <?php
-    $hero_slides = [
+    $hero_defaults = [
         [
-            'image' => get_theme_mod('hero_slide_1') ?: home_url() . '/wp-content/uploads/2025/08/students-happy.webp',
-            'title' => 'Membentuk Generasi Unggul',
-            'subtitle' => 'Pendidikan Berkualitas untuk Masa Depan Cerah',
-            'cta_text' => 'Daftar Sekarang',
-            'cta_link' => '#ppdb'
+            'image' => 'https://images.unsplash.com/photo-1503676260728-1c00da094a0b?auto=format&fit=crop&w=1600&q=80',
+            'kicker' => 'SMK Kesehatan Bali Dewata',
+            'title' => 'Mencetak Tenaga Kesehatan Profesional',
+            'text' => 'Kurikulum berbasis industri, guru berpengalaman, dan fasilitas praktik modern.',
         ],
         [
-            'image' => get_theme_mod('hero_slide_2') ?: home_url() . '/wp-content/uploads/2025/08/school-building.webp',
-            'title' => 'Fasilitas Modern & Lengkap',
-            'subtitle' => 'Lingkungan Belajar yang Nyaman dan Kondusif',
-            'cta_text' => 'Lihat Profil Sekolah',
-            'cta_link' => '#about'
+            'image' => 'https://images.unsplash.com/photo-1526256262350-7da7584cf5eb?auto=format&fit=crop&w=1600&q=80',
+            'kicker' => 'Fasilitas Lengkap',
+            'title' => 'Laboratorium Farmasi & Keperawatan',
+            'text' => 'Simulasi klinis dan peralatan terbaru untuk pengalaman belajar nyata.',
         ],
         [
-            'image' => get_theme_mod('hero_slide_3') ?: home_url() . '/wp-content/uploads/2025/08/students-learning.webp',
-            'title' => 'Prestasi Gemilang',
-            'subtitle' => 'Raih Mimpimu Bersama Kami',
-            'cta_text' => 'Hubungi Kami',
-            'cta_link' => '#contact'
+            'image' => 'https://images.unsplash.com/photo-1504439468489-c8920d796a29?auto=format&fit=crop&w=1600&q=80',
+            'kicker' => 'Berbasis Karier',
+            'title' => 'Siap Kerja, Siap Kuliah',
+            'text' => 'Kemitraan dengan fasilitas kesehatan dan alumni yang sukses di berbagai institusi.',
         ],
     ];
+
+    $hero_slides = [];
+    for ($i = 1; $i <= 3; $i++) {
+        $hero_slides[] = [
+            'image' => get_theme_mod("smk_hero_image_{$i}", $hero_defaults[$i - 1]['image']),
+            'kicker' => get_theme_mod("smk_hero_kicker_{$i}", $hero_defaults[$i - 1]['kicker']),
+            'title' => get_theme_mod("smk_hero_title_{$i}", $hero_defaults[$i - 1]['title']),
+            'text' => get_theme_mod("smk_hero_text_{$i}", $hero_defaults[$i - 1]['text']),
+        ];
+    }
     ?>
 
-    <div id="heroCarousel" class="relative w-full h-full">
-        <?php foreach ($hero_slides as $index => $slide): ?>
-            <div class="hero-slide absolute inset-0 transition-opacity duration-1000 <?= $index === 0 ? 'opacity-100 z-10' : 'opacity-0 z-0' ?>" data-slide="<?= $index ?>">
-                <img src="<?= esc_url($slide['image']); ?>" 
-                     alt="<?= esc_attr($slide['title']); ?>"
-                     class="absolute inset-0 w-full h-full object-cover">
-                <div class="absolute inset-0 bg-gradient-to-r from-blue-900/80 via-blue-900/60 to-transparent"></div>
-                
-                <div class="relative z-10 flex items-center h-full">
-                    <div class="container mx-auto px-4 md:px-8">
-                        <div class="max-w-2xl text-white space-y-6">
-                            <h1 class="text-4xl md:text-6xl lg:text-7xl font-bold leading-tight animate-fade-in-up">
-                                <?= esc_html($slide['title']); ?>
-                            </h1>
-                            <p class="text-xl md:text-2xl font-light animate-fade-in-up animation-delay-200">
-                                <?= esc_html($slide['subtitle']); ?>
-                            </p>
-                            <a href="<?= esc_url($slide['cta_link']); ?>" 
-                               class="inline-block px-8 py-4 bg-yellow-500 hover:bg-yellow-600 text-white font-semibold rounded-lg shadow-lg transform hover:scale-105 transition-all duration-300 animate-fade-in-up animation-delay-400">
-                                <?= esc_html($slide['cta_text']); ?>
-                            </a>
-                        </div>
-                    </div>
-                </div>
+    <section id="hero" class="hero-section">
+        <div id="heroCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="6500">
+            <div class="carousel-indicators">
+                <?php foreach ($hero_slides as $index => $slide): ?>
+                    <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="<?php echo esc_attr($index); ?>" class="<?php echo $index === 0 ? 'active' : ''; ?>" aria-current="<?php echo $index === 0 ? 'true' : 'false'; ?>" aria-label="<?php echo esc_attr(sprintf(__('Slide %d', 'smkkesehatan'), $index + 1)); ?>"></button>
+                <?php endforeach; ?>
             </div>
-        <?php endforeach; ?>
-
-        <!-- Navigation Arrows -->
-        <button id="heroPrev" class="absolute left-4 top-1/2 -translate-y-1/2 z-20 w-12 h-12 bg-white/20 hover:bg-white/40 backdrop-blur-sm rounded-full flex items-center justify-center text-white text-2xl transition-all">
-            ‹
-        </button>
-        <button id="heroNext" class="absolute right-4 top-1/2 -translate-y-1/2 z-20 w-12 h-12 bg-white/20 hover:bg-white/40 backdrop-blur-sm rounded-full flex items-center justify-center text-white text-2xl transition-all">
-            ›
-        </button>
-
-        <!-- Dots Indicator -->
-        <div class="absolute bottom-8 left-1/2 -translate-x-1/2 z-20 flex gap-3">
-            <?php foreach ($hero_slides as $index => $_): ?>
-                <button class="hero-dot w-3 h-3 rounded-full bg-white/40 hover:bg-white transition-all" data-dot="<?= $index ?>"></button>
-            <?php endforeach; ?>
-        </div>
-    </div>
-</section>
-
-<!-- Welcome from Principal Section -->
-<section id="about" class="py-16 md:py-24 bg-gray-50">
-    <div class="container mx-auto px-4 md:px-8">
-        <div class="grid md:grid-cols-2 gap-12 items-center">
-            <div class="relative">
-                <img src="<?= get_theme_mod('principal_image') ?: home_url() . '/wp-content/uploads/2025/08/principal.webp'; ?>" 
-                     alt="Kepala Sekolah" 
-                     class="rounded-2xl shadow-2xl w-full">
-                <div class="absolute -bottom-6 -right-6 bg-blue-600 text-white p-6 rounded-xl shadow-xl">
-                    <p class="text-4xl font-bold">25+</p>
-                    <p class="text-sm">Tahun Pengalaman</p>
-                </div>
-            </div>
-            
-            <div class="space-y-6">
-                <div>
-                    <span class="text-yellow-500 font-semibold text-sm uppercase tracking-wider">Sambutan</span>
-                    <h2 class="text-3xl md:text-5xl font-bold text-gray-900 mt-2">
-                        Kepala Sekolah
-                    </h2>
-                </div>
-                
-                <p class="text-gray-600 text-lg leading-relaxed">
-                    "Selamat datang di website sekolah kami. Kami berkomitmen untuk memberikan pendidikan berkualitas yang tidak hanya fokus pada prestasi akademik, tetapi juga pengembangan karakter dan keterampilan abad 21."
-                </p>
-                
-                <p class="text-gray-600 leading-relaxed">
-                    "Dengan dukungan tenaga pendidik profesional dan fasilitas modern, kami yakin dapat membimbing putra-putri Anda meraih masa depan gemilang."
-                </p>
-                
-                <div class="flex items-center gap-4">
-                    <div>
-                        <p class="font-bold text-gray-900 text-lg">Dr. Ahmad Sudrajat, M.Pd</p>
-                        <p class="text-gray-500">Kepala Sekolah</p>
-                    </div>
-                </div>
-                
-                <a href="#" class="inline-flex items-center gap-2 text-blue-600 hover:text-blue-700 font-semibold">
-                    Baca Selengkapnya 
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
-                    </svg>
-                </a>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- Keunggulan Section -->
-<section id="keunggulan" class="relative overflow-hidden bg-slate-50 py-16 md:py-24">
-    <div class="absolute inset-0">
-        <div class="absolute -top-24 right-0 h-64 w-64 rounded-full bg-blue-200/40 blur-3xl"></div>
-        <div class="absolute bottom-0 left-0 h-72 w-72 rounded-full bg-yellow-200/40 blur-3xl"></div>
-    </div>
-
-    <div class="container relative z-10 mx-auto px-4 md:px-8">
-        <div class="grid gap-10 lg:grid-cols-[1.1fr_1.9fr] lg:items-center">
-            <div class="space-y-5">
-                <span class="inline-flex items-center gap-2 rounded-full border border-blue-100 bg-white px-4 py-2 text-xs font-semibold uppercase tracking-[0.2em] text-blue-700 shadow-sm">
-                    Keunggulan
-                </span>
-                <h2 class="text-3xl font-bold leading-tight text-slate-900 md:text-5xl">
-                    Lingkungan belajar modern, disiplin, dan berorientasi masa depan
-                </h2>
-                <p class="text-base leading-relaxed text-slate-600 md:text-lg">
-                    SMK Bali Dewata menghadirkan kombinasi kurikulum berbasis industri, karakter disiplin, dan fasilitas yang mendukung pengembangan keterampilan abad 21.
-                </p>
-                <div class="flex flex-wrap gap-3">
-                    <span class="rounded-full bg-white px-4 py-2 text-xs font-semibold text-slate-600 shadow-sm">Industri Partners</span>
-                    <span class="rounded-full bg-white px-4 py-2 text-xs font-semibold text-slate-600 shadow-sm">Guru Profesional</span>
-                    <span class="rounded-full bg-white px-4 py-2 text-xs font-semibold text-slate-600 shadow-sm">Fasilitas Modern</span>
-                </div>
-            </div>
-
-            <div class="grid gap-6 md:grid-cols-2">
-                <div class="group rounded-2xl border border-slate-200 bg-white p-6 shadow-sm transition-all hover:-translate-y-1 hover:shadow-lg">
-                    <div class="flex h-12 w-12 items-center justify-center rounded-xl bg-blue-600 text-white">
-                        <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v12m6-6H6"/>
-                        </svg>
-                    </div>
-                    <h3 class="mt-4 text-lg font-semibold text-slate-900">Program Keahlian Unggulan</h3>
-                    <p class="mt-2 text-sm leading-relaxed text-slate-600">Kurikulum selaras kebutuhan industri dengan pembelajaran berbasis proyek.</p>
-                </div>
-
-                <div class="group rounded-2xl border border-slate-200 bg-white p-6 shadow-sm transition-all hover:-translate-y-1 hover:shadow-lg">
-                    <div class="flex h-12 w-12 items-center justify-center rounded-xl bg-yellow-500 text-white">
-                        <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2v1h6v-1c0-1.105-1.343-2-3-2zm0 0V6m0 10v2m-5-6H6m12 0h-1"/>
-                        </svg>
-                    </div>
-                    <h3 class="mt-4 text-lg font-semibold text-slate-900">Karakter & Disiplin</h3>
-                    <p class="mt-2 text-sm leading-relaxed text-slate-600">Budaya sekolah yang membentuk karakter kuat, tepat waktu, dan bertanggung jawab.</p>
-                </div>
-
-                <div class="group rounded-2xl border border-slate-200 bg-white p-6 shadow-sm transition-all hover:-translate-y-1 hover:shadow-lg">
-                    <div class="flex h-12 w-12 items-center justify-center rounded-xl bg-emerald-500 text-white">
-                        <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7h18M3 12h18M3 17h18"/>
-                        </svg>
-                    </div>
-                    <h3 class="mt-4 text-lg font-semibold text-slate-900">Fasilitas Praktik</h3>
-                    <p class="mt-2 text-sm leading-relaxed text-slate-600">Laboratorium dan studio modern untuk memaksimalkan pembelajaran praktik.</p>
-                </div>
-
-                <div class="group rounded-2xl border border-slate-200 bg-white p-6 shadow-sm transition-all hover:-translate-y-1 hover:shadow-lg">
-                    <div class="flex h-12 w-12 items-center justify-center rounded-xl bg-slate-900 text-white">
-                        <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
-                        </svg>
-                    </div>
-                    <h3 class="mt-4 text-lg font-semibold text-slate-900">Siap Kerja & Kuliah</h3>
-                    <p class="mt-2 text-sm leading-relaxed text-slate-600">Pendampingan karier, magang, dan bimbingan melanjutkan studi.</p>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- latest news -->
-<section class="py-16 md:py-24 bg-gray-50">
-    <div class="container mx-auto px-4 md:px-8">
-
-        <!-- Header -->
-        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-10">
-            <div>
-                <span class="text-blue-600 font-semibold text-sm uppercase tracking-wider">
-                    Update
-                </span>
-                <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mt-1">
-                    Berita Terbaru
-                </h2>
-            </div>
-
-            <a href="<?= esc_url(get_permalink(get_option('page_for_posts'))); ?>"
-               class="text-blue-600 hover:text-blue-700 font-semibold flex items-center gap-2">
-                Lihat Semua
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                          d="M9 5l7 7-7 7"/>
-                </svg>
-            </a>
-        </div>
-
-        <div class="space-y-8">
-
-            <!-- ================= FEATURED LATEST POST ================= -->
-            <?php
-            $latest = new WP_Query([
-                'post_type' => 'post',
-                'posts_per_page' => 1,
-                'orderby' => 'date',
-                'order' => 'DESC',
-            ]);
-            ?>
-
-            <?php if ($latest->have_posts()):
-                while ($latest->have_posts()):
-                    $latest->the_post(); ?>
-                <article class="bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all group">
-                    <div class="grid grid-cols-1 md:grid-cols-3">
-
-                        <div class="relative aspect-[4/3] md:aspect-auto overflow-hidden">
-                            <?php if (has_post_thumbnail()): ?>
-                                <img src="<?php the_post_thumbnail_url('large'); ?>"
-                                     alt="<?php the_title_attribute(); ?>"
-                                     class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300">
-                            <?php endif; ?>
-
-                            <?php $cat = get_the_category();
-                            if (!empty($cat)): ?>
-                                <span class="absolute top-4 left-4 bg-blue-600 text-white px-3 py-1 rounded-full text-xs font-semibold">
-                                    <?= esc_html($cat[0]->name); ?>
-                                </span>
-                            <?php endif; ?>
-                        </div>
-
-                        <div class="md:col-span-2 p-6">
-                            <div class="flex flex-wrap items-center gap-3 text-sm text-gray-500 mb-3">
-                                <span><?= get_the_date('d M Y'); ?></span>
-                                <span>•</span>
-                                <span><?= esc_html(get_the_author()); ?></span>
+            <div class="carousel-inner">
+                <?php foreach ($hero_slides as $index => $slide): ?>
+                    <div class="carousel-item <?php echo $index === 0 ? 'active' : ''; ?>">
+                        <img src="<?php echo esc_url($slide['image']); ?>" class="d-block w-100 hero-image" alt="<?php echo esc_attr($slide['title']); ?>">
+                        <div class="carousel-caption">
+                            <div class="hero-card">
+                                <?php if (!empty($slide['kicker'])): ?>
+                                    <p class="hero-kicker"><?php echo esc_html($slide['kicker']); ?></p>
+                                <?php endif; ?>
+                                <?php if (!empty($slide['title'])): ?>
+                                    <?php if ($index === 0): ?>
+                                        <h1 class="hero-title"><?php echo esc_html($slide['title']); ?></h1>
+                                    <?php else: ?>
+                                        <h2 class="hero-title"><?php echo esc_html($slide['title']); ?></h2>
+                                    <?php endif; ?>
+                                <?php endif; ?>
+                                <?php if (!empty($slide['text'])): ?>
+                                    <p class="hero-text"><?php echo esc_html($slide['text']); ?></p>
+                                <?php endif; ?>
                             </div>
-
-                            <h3 class="text-xl font-bold text-gray-900 mb-3 group-hover:text-blue-600 transition-colors">
-                                <a href="<?php the_permalink(); ?>">
-                                    <?php the_title(); ?>
-                                </a>
-                            </h3>
-
-                            <p class="text-gray-600 mb-4">
-                                <?= wp_trim_words(get_the_excerpt(), 30); ?>
-                            </p>
-
-                            <a href="<?php the_permalink(); ?>"
-                               class="text-blue-600 hover:text-blue-700 font-semibold inline-flex items-center gap-2">
-                                Baca Selengkapnya
-                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                          d="M9 5l7 7-7 7"/>
-                                </svg>
-                            </a>
                         </div>
                     </div>
-                </article>
-            <?php endwhile;
-                wp_reset_postdata();
-            endif; ?>
+                <?php endforeach; ?>
+            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#heroCarousel" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden"><?php esc_html_e('Previous', 'smkkesehatan'); ?></span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#heroCarousel" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden"><?php esc_html_e('Next', 'smkkesehatan'); ?></span>
+            </button>
+        </div>
+    </section>
 
-            <!-- ================= OTHER LATEST POSTS ================= -->
+    <section id="kompetensi" class="section-pad">
+        <div class="container">
+            <div class="section-header">
+                <p class="section-kicker">Program Unggulan</p>
+                <h2>Kompetensi Keahlian</h2>
+                <p><?php echo esc_html(get_theme_mod('smk_kompetensi_intro', 'Jalur pembelajaran spesifik dengan sertifikasi dan praktik industri untuk karier masa depan.')); ?></p>
+            </div>
             <?php
-            $latest_more = new WP_Query([
-                'post_type' => 'post',
-                'posts_per_page' => 4,
-                'offset' => 1,
-                'orderby' => 'date',
-                'order' => 'DESC',
-            ]);
+            $default_kickers = [
+                1 => 'Farmasi',
+                2 => 'Perawat',
+                3 => 'Farmasi Klinis',
+                4 => 'Keperawatan',
+                5 => 'Laboratorium',
+                6 => 'Rekam Medis',
+                7 => 'Gizi',
+            ];
+            $default_titles = [
+                1 => 'Asisten Tenaga Kefarmasian',
+                2 => 'Asisten Keperawatan',
+                3 => 'Teknisi Farmasi Klinis',
+                4 => 'Keperawatan Komunitas',
+                5 => 'Analis Laboratorium',
+                6 => 'Manajemen Rekam Medis',
+                7 => 'Nutrisi & Dietetik',
+            ];
+            $default_texts = [
+                1 => 'Fokus pada peracikan obat, pelayanan farmasi, dan manajemen logistik obat.',
+                2 => 'Pembelajaran keterampilan klinis dasar, komunikasi pasien, dan etika profesi.',
+                3 => 'Pendalaman farmasi klinis, dispensing, dan edukasi obat.',
+                4 => 'Penerapan keperawatan komunitas dengan pendekatan preventif.',
+                5 => 'Praktik analisa sampel klinis dan prosedur laboratorium modern.',
+                6 => 'Pengelolaan data pasien dan administrasi rekam medis.',
+                7 => 'Ilmu gizi seimbang dan praktik dietetik untuk layanan kesehatan.',
+            ];
+            $default_lists = [
+                1 => "Praktik laboratorium formulasi obat.\nSimulasi layanan apotek modern.\nMagang di klinik dan rumah sakit.",
+                2 => "Simulasi tindakan keperawatan harian.\nPendampingan guru klinis berpengalaman.\nKegiatan praktik di fasilitas kesehatan.",
+                3 => "Analisis resep dan interaksi obat.\nSimulasi layanan farmasi klinis.\nPendampingan preseptor industri.",
+                4 => "Pembelajaran berbasis kasus komunitas.\nPraktik edukasi kesehatan.\nKegiatan bakti sosial.",
+                5 => "Uji hematologi dan kimia klinik.\nKultur dan identifikasi mikroba.\nPenggunaan alat laboratorium digital.",
+                6 => "Pengarsipan rekam medis digital.\nStandar privasi dan keamanan data.\nSimulasi administrasi layanan.",
+                7 => "Perencanaan menu sehat.\nAnalisis kebutuhan gizi.\nPraktik konseling diet.",
+            ];
+            $kompetensi_items = [];
+            for ($i = 1; $i <= 7; $i++) {
+                $list_items = preg_split('/\r\n|\r|\n/', (string) get_theme_mod("smk_kompetensi_list_{$i}", $default_lists[$i]));
+                $kompetensi_items[] = [
+                    'kicker' => get_theme_mod("smk_kompetensi_kicker_{$i}", $default_kickers[$i]),
+                    'title' => get_theme_mod("smk_kompetensi_title_{$i}", $default_titles[$i]),
+                    'text' => get_theme_mod("smk_kompetensi_text_{$i}", $default_texts[$i]),
+                    'bullets' => array_filter(array_map('trim', $list_items)),
+                ];
+            }
             ?>
-
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <?php if ($latest_more->have_posts()):
-                    while ($latest_more->have_posts()):
-                        $latest_more->the_post(); ?>
-                    <article class="bg-white rounded-xl p-6 shadow-md hover:shadow-lg transition-all">
-                        <div class="flex flex-wrap items-center gap-3 text-sm text-gray-500 mb-2">
-                            <span><?= get_the_date('d M Y'); ?></span>
-                            <?php $cat = get_the_category();
-                            if (!empty($cat)): ?>
-                                <span class="bg-gray-100 text-gray-800 px-2 py-1 rounded text-xs font-semibold">
-                                    <?= esc_html($cat[0]->name); ?>
-                                </span>
+            <div class="kompetensi-list-stack">
+                <?php foreach ($kompetensi_items as $index => $item): ?>
+                    <div class="stack-item">
+                        <div class="stack-number"><?php echo esc_html($index + 1); ?></div>
+                        <div class="stack-content">
+                            <?php if (!empty($item['kicker'])): ?>
+                                <p class="card-kicker"><?php echo esc_html($item['kicker']); ?></p>
+                            <?php endif; ?>
+                            <?php if (!empty($item['title'])): ?>
+                                <h3 class="card-title"><?php echo esc_html($item['title']); ?></h3>
+                            <?php endif; ?>
+                            <?php if (!empty($item['text'])): ?>
+                                <p class="card-text"><?php echo esc_html($item['text']); ?></p>
+                            <?php endif; ?>
+                            <?php if (!empty($item['bullets'])): ?>
+                                <ul class="kompetensi-list">
+                                    <?php foreach ($item['bullets'] as $bullet): ?>
+                                        <li><?php echo esc_html($bullet); ?></li>
+                                    <?php endforeach; ?>
+                                </ul>
                             <?php endif; ?>
                         </div>
-
-                        <h3 class="text-lg font-bold text-gray-900 mb-2 hover:text-blue-600 transition-colors">
-                            <a href="<?php the_permalink(); ?>">
-                                <?php the_title(); ?>
-                            </a>
-                        </h3>
-
-                        <p class="text-gray-600 text-sm">
-                            <?= wp_trim_words(get_the_excerpt(), 18); ?>
-                        </p>
-                    </article>
-                <?php endwhile;
-                    wp_reset_postdata();
-                endif; ?>
+                    </div>
+                <?php endforeach; ?>
             </div>
-
         </div>
-    </div>
-</section>
+    </section>
 
-
-
-<!-- CTA Section
-<section id="contact" class="relative py-20 bg-gradient-to-br from-blue-600 to-blue-800 text-white overflow-hidden">
-    <div class="absolute inset-0 opacity-10">
-        <div class="absolute top-1/4 left-1/4 w-96 h-96 bg-yellow-400 rounded-full blur-3xl animate-pulse"></div>
-        <div class="absolute bottom-1/4 right-1/4 w-96 h-96 bg-blue-400 rounded-full blur-3xl animate-pulse animation-delay-1000"></div>
-    </div>
-    
-    <div class="container mx-auto px-4 md:px-8 relative z-10">
-        <div class="max-w-4xl mx-auto text-center">
-            <h2 class="text-4xl md:text-5xl font-bold mb-6">
-                Siap Bergabung Bersama Kami?
-            </h2>
-            <p class="text-xl text-blue-100 mb-8">
-                Wujudkan masa depan cerah putra-putri Anda. Daftar sekarang dan dapatkan informasi lengkap tentang program kami.
-            </p>
-            <div class="flex flex-col sm:flex-row gap-4 justify-center">
-                <a href="#ppdb" class="inline-block px-8 py-4 bg-yellow-500 hover:bg-yellow-600 text-blue-900 font-bold rounded-lg shadow-lg transform hover:scale-105 transition-all">
-                    Daftar Sekarang
-                </a>
-                <a href="https://wa.me/628123456789" target="_blank" class="inline-block px-8 py-4 bg-white/10 hover:bg-white/20 backdrop-blur-sm text-white font-bold rounded-lg border-2 border-white/30 transform hover:scale-105 transition-all">
-                    Hubungi Kami
-                </a>
+    <?php
+    $keunggulan_bg = get_theme_mod('smk_keunggulan_bg_image', '');
+    $keunggulan_style = $keunggulan_bg ? "style=\"--section-bg-image: url('" . esc_url($keunggulan_bg) . "');\"" : '';
+    ?>
+    <section id="keunggulan" class="section-pad section-accent" <?php echo $keunggulan_style; ?>>
+        <div class="container">
+            <div class="section-header">
+                <p class="section-kicker">Mengapa Kami</p>
+                <h2>Keunggulan SMK Kesehatan Bali Dewata</h2>
+                <p><?php echo esc_html(get_theme_mod('smk_keunggulan_intro', 'Lingkungan belajar yang formal, profesional, dan adaptif dengan kebutuhan dunia kesehatan.')); ?></p>
             </div>
-            
-            <div class="grid md:grid-cols-3 gap-8 mt-16">
-                <div class="text-center">
-                    <div class="text-4xl font-bold text-yellow-400 mb-2">500+</div>
-                    <p class="text-blue-100">Siswa Aktif</p>
+            <div class="row g-4">
+                <div class="col-md-6 col-lg-3">
+                    <div class="feature-card h-100">
+                        <span class="feature-number">01</span>
+                        <h3><?php echo esc_html(get_theme_mod('smk_keunggulan_title_1', 'Kurikulum Industri')); ?></h3>
+                        <p><?php echo esc_html(get_theme_mod('smk_keunggulan_text_1', 'Materi dirancang bersama mitra kesehatan untuk membekali kompetensi nyata.')); ?></p>
+                    </div>
                 </div>
-                <div class="text-center">
-                    <div class="text-4xl font-bold text-yellow-400 mb-2">50+</div>
-                    <p class="text-blue-100">Tenaga Pengajar</p>
+                <div class="col-md-6 col-lg-3">
+                    <div class="feature-card h-100">
+                        <span class="feature-number">02</span>
+                        <h3><?php echo esc_html(get_theme_mod('smk_keunggulan_title_2', 'Fasilitas Modern')); ?></h3>
+                        <p><?php echo esc_html(get_theme_mod('smk_keunggulan_text_2', 'Laboratorium praktik dan ruang simulasi yang mendukung pembelajaran aktif.')); ?></p>
+                    </div>
                 </div>
-                <div class="text-center">
-                    <div class="text-4xl font-bold text-yellow-400 mb-2">98%</div>
-                    <p class="text-blue-100">Tingkat Kelulusan</p>
+                <div class="col-md-6 col-lg-3">
+                    <div class="feature-card h-100">
+                        <span class="feature-number">03</span>
+                        <h3><?php echo esc_html(get_theme_mod('smk_keunggulan_title_3', 'Pengajar Profesional')); ?></h3>
+                        <p><?php echo esc_html(get_theme_mod('smk_keunggulan_text_3', 'Tenaga pendidik berpengalaman di bidang kesehatan dan pendidikan vokasi.')); ?></p>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-3">
+                    <div class="feature-card h-100">
+                        <span class="feature-number">04</span>
+                        <h3><?php echo esc_html(get_theme_mod('smk_keunggulan_title_4', 'Jalur Karier')); ?></h3>
+                        <p><?php echo esc_html(get_theme_mod('smk_keunggulan_text_4', 'Program pendampingan alumni dan kerja sama industri untuk penempatan kerja.')); ?></p>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-</section> -->
+    </section>
 
-<!-- Custom CSS for Animations -->
-<style>
-@keyframes fadeInUp {
-    from {
-        opacity: 0;
-        transform: translateY(30px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-.animate-fade-in-up {
-    animation: fadeInUp 0.8s ease-out forwards;
-}
-
-.animation-delay-200 {
-    animation-delay: 0.2s;
-    opacity: 0;
-}
-
-.animation-delay-400 {
-    animation-delay: 0.4s;
-    opacity: 0;
-}
-
-.animation-delay-1000 {
-    animation-delay: 1s;
-}
-</style>
-
-<!-- JavaScript for Hero Carousel -->
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    const slides = document.querySelectorAll('.hero-slide');
-    const dots = document.querySelectorAll('.hero-dot');
-    const prevBtn = document.getElementById('heroPrev');
-    const nextBtn = document.getElementById('heroNext');
-    
-    let current = 0;
-    const total = slides.length;
-    const intervalTime = 5000;
-    let autoplay;
-
-    function showSlide(index) {
-        slides.forEach((slide, i) => {
-            if (i === index) {
-                slide.classList.remove('opacity-0', 'z-0');
-                slide.classList.add('opacity-100', 'z-10');
-            } else {
-                slide.classList.remove('opacity-100', 'z-10');
-                slide.classList.add('opacity-0', 'z-0');
+    <section id="blog" class="section-pad">
+        <div class="container">
+            <div class="section-header">
+                <p class="section-kicker">Informasi Sekolah</p>
+                <h2>Info Terbaru</h2>
+                <p>Ikuti berita, kegiatan, dan prestasi terbaru dari SMK Kesehatan Bali Dewata.</p>
+            </div>
+            <?php
+            $latest_posts = new WP_Query([
+                'posts_per_page' => 6,
+                'post_status' => 'publish',
+                'category_name' => 'berita',
+            ]);
+            $post_ids = [];
+            if ($latest_posts->have_posts()) {
+                while ($latest_posts->have_posts()) {
+                    $latest_posts->the_post();
+                    $post_ids[] = get_the_ID();
+                }
+                wp_reset_postdata();
             }
-        });
+            ?>
+            <?php if (!empty($post_ids)): ?>
+                <?php $post_chunks = array_chunk($post_ids, 3); ?>
+                <div id="infoCarousel" class="carousel slide info-carousel" data-bs-ride="carousel">
+                    <div class="carousel-indicators">
+                        <?php foreach ($post_chunks as $index => $chunk): ?>
+                            <button type="button" data-bs-target="#infoCarousel" data-bs-slide-to="<?php echo esc_attr($index); ?>" class="<?php echo $index === 0 ? 'active' : ''; ?>" aria-current="<?php echo $index === 0 ? 'true' : 'false'; ?>" aria-label="<?php echo esc_attr(sprintf(__('Slide %d', 'smkkesehatan'), $index + 1)); ?>"></button>
+                        <?php endforeach; ?>
+                    </div>
+                    <div class="carousel-inner">
+                        <?php foreach ($post_chunks as $index => $chunk): ?>
+                            <div class="carousel-item <?php echo $index === 0 ? 'active' : ''; ?>">
+                                <div class="row g-4">
+                                    <?php foreach ($chunk as $post_id): ?>
+                                        <div class="col-md-4">
+                                            <article class="card blog-card h-100">
+                                                <div class="card-body">
+                                                    <p class="card-kicker"><?php echo esc_html(get_the_date('', $post_id)); ?></p>
+                                                    <h3 class="card-title">
+                                                        <a href="<?php echo esc_url(get_permalink($post_id)); ?>"><?php echo esc_html(get_the_title($post_id)); ?></a>
+                                                    </h3>
+                                                    <p class="card-text"><?php echo esc_html(wp_trim_words(get_the_excerpt($post_id), 18)); ?></p>
+                                                </div>
+                                                <div class="card-footer">
+                                                    <a class="btn btn-link" href="<?php echo esc_url(get_permalink($post_id)); ?>">Baca selengkapnya</a>
+                                                </div>
+                                            </article>
+                                        </div>
+                                    <?php endforeach; ?>
+                                </div>
+                            </div>
+                        <?php endforeach; ?>
+                    </div>
+                    <button class="carousel-control-prev" type="button" data-bs-target="#infoCarousel" data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden"><?php esc_html_e('Previous', 'smkkesehatan'); ?></span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#infoCarousel" data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden"><?php esc_html_e('Next', 'smkkesehatan'); ?></span>
+                    </button>
+                </div>
+            <?php else: ?>
+                <div class="empty-state">
+                    <h3>Belum ada artikel</h3>
+                    <p>Berita sekolah akan segera diperbarui.</p>
+                </div>
+            <?php endif; ?>
+        </div>
+    </section>
 
-        dots.forEach((dot, i) => {
-            if (i === index) {
-                dot.classList.remove('bg-white/40');
-                dot.classList.add('bg-white', 'scale-125');
-            } else {
-                dot.classList.remove('bg-white', 'scale-125');
-                dot.classList.add('bg-white/40');
-            }
-        });
+</main>
 
-        current = index;
-    }
-
-    function nextSlide() {
-        showSlide((current + 1) % total);
-    }
-
-    function prevSlide() {
-        showSlide((current - 1 + total) % total);
-    }
-
-    function startAutoplay() {
-        autoplay = setInterval(nextSlide, intervalTime);
-    }
-
-    function resetAutoplay() {
-        clearInterval(autoplay);
-        startAutoplay();
-    }
-
-    // Event listeners
-    dots.forEach((dot, index) => {
-        dot.addEventListener('click', () => {
-            showSlide(index);
-            resetAutoplay();
-        });
-    });
-
-    if (prevBtn && nextBtn) {
-        prevBtn.addEventListener('click', () => {
-            prevSlide();
-            resetAutoplay();
-        });
-
-        nextBtn.addEventListener('click', () => {
-            nextSlide();
-            resetAutoplay();
-        });
-    }
-
-    // Initialize
-    showSlide(0);
-    startAutoplay();
-
-    // Countdown Timer
-    function updateCountdown() {
-        const targetDate = new Date('2026-02-01T00:00:00').getTime();
-        const now = new Date().getTime();
-        const distance = targetDate - now;
-
-        const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-        const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-        const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
-        document.getElementById('days').textContent = days;
-        document.getElementById('hours').textContent = hours;
-        document.getElementById('minutes').textContent = minutes;
-        document.getElementById('seconds').textContent = seconds;
-
-        if (distance < 0) {
-            clearInterval(countdownInterval);
-            document.getElementById('days').textContent = '0';
-            document.getElementById('hours').textContent = '0';
-            document.getElementById('minutes').textContent = '0';
-            document.getElementById('seconds').textContent = '0';
-        }
-    }
-
-    const countdownInterval = setInterval(updateCountdown, 1000);
-    updateCountdown();
-});
-</script>
-
-<?php get_template_part('templates/footer'); ?>
+<?php
+get_footer();
